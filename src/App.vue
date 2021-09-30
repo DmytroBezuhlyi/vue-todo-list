@@ -1,32 +1,73 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <ToDoNav/>
+    <div class="container">
+      <router-view></router-view>
     </div>
-    <router-view/>
   </div>
 </template>
 
+<script>
+import ToDoNav from "@/components/ToDoNav";
+
+export default {
+  components: {ToDoNav}
+}
+</script>
+
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+
+h1 {
+  color: teal;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
+  margin: 0.5rem;
   text-align: center;
-  color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+h3 {
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+h4 {
+  font-weight: 500;
+  word-break: break-word;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.container {
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.error {
+  color: white !important;
+  background-color: red !important;
+  transition: background-color .2s ease-in;
+}
+
+.error:hover {
+  background-color: #d70000 !important;
+}
+
+.create {
+  align-self: flex-end;
+  background-color: cornflowerblue !important;
+  color: aliceblue !important;
+  font-weight: 500;
+  text-shadow: 0 0 4px #000;
 }
 </style>
