@@ -3,11 +3,6 @@ export const todosModule = {
     todoList: [],
     isLoading: false
   }),
-  getters: {
-    // getTodoList(state) {
-    //   return state.todoList;
-    // }
-  },
   mutations: {
     setTodoList(state, list) {
       state.todoList = list;

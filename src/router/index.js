@@ -10,8 +10,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'HomePage',
-    component: HomePage
+    name: 'ToDo Page',
+    component: ToDoPageStore
   },
   {
     path: '/about',
@@ -20,13 +20,13 @@ const routes = [
   },
   {
     path: '/todos/:id',
-    name: 'ToDo',
+    name: 'ToDo Single Page',
     component: ToDoSinglePage
   },
   {
-    path: '/store',
-    name: 'ToDos Page From Store',
-    component: ToDoPageStore
+    path: '/home',
+    name: 'Home Page',
+    component: HomePage
   }
 ]
 
