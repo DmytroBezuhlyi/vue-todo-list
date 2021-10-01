@@ -52,4 +52,24 @@ export default {
 .logo img {
   width: 100%;
 }
+
+@media (max-width: 576px) {
+  #nav {
+    justify-content: flex-end;
+  }
+
+  .logo {
+    left: 30px;
+  }
+}
+
+@media (max-width: 375px) {
+  #nav {
+    padding: 30px 15px;
+  }
+
+  .logo {
+    left: 15px;
+  }
+}
 </style>

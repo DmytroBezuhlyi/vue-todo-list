@@ -50,7 +50,10 @@ export default {
 .list > p {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
   margin: 0.5rem 0 0;
+  width: 100%;
 }
 
 .list-enter-active {

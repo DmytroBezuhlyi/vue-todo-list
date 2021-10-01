@@ -12,27 +12,12 @@
 
 <script>
 import ToDoPreloader from "@/components/UI/ToDoPreloader";
+import preloaderMixin from "@/mixins/preloaderMixin";
 
 export default {
   name: "ToDoSinglePage",
   components: {ToDoPreloader},
-  data() {
-    return {
-      isLoading: false,
-      post: {}
-    }
-  },
-  methods: {
-    loading() {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
-    }
-  },
-  beforeMount() {
-    this.loading()
-  }
+  mixins: [preloaderMixin]
 }
 </script>
 
