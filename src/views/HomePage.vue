@@ -1,7 +1,7 @@
 <template>
   <div class="home" v-if="isLoading">
     <h1>VUE.js TODO APP</h1>
-    <img class="logo-img" :src="require('../../../todo/src/assets/checklist_106575.png')" alt="logo">
+    <img class="logo-img" :src="require('@/assets/checklist_106575.png')" alt="logo">
     <p class="text">To see your todo (or add one) go to the todos' list through link "TODOs"</p>
   </div>
   <div v-else>
