@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <div class="logo">
-      <img :src="require('../assets/logo.png')" alt="">
+      <img :src="require('@/assets/logo.png')" alt="">
     </div>
     <div class="nav">
       <router-link to="/">Home</router-link>
