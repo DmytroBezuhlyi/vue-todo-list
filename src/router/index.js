@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import AboutPage from "@/views/AboutPage";
-import ToDoPage from "@/views/ToDoPage";
 import ToDoSinglePage from "@/components/ToDoSinglePage";
 import ToDoPageStore from "@/views/ToDoPageStore";
 
@@ -13,11 +12,6 @@ const routes = [
     path: '/',
     name: 'HomePage',
     component: HomePage
-  },
-  {
-    path: '/todos',
-    name: 'ToDoS Page',
-    component: ToDoPage
   },
   {
     path: '/about',
