@@ -4,6 +4,7 @@ import HomePage from '../views/HomePage.vue'
 import AboutPage from "@/views/AboutPage";
 import ToDoPage from "@/views/ToDoPage";
 import ToDoSinglePage from "@/components/ToDoSinglePage";
+import ToDoPageStore from "@/views/ToDoPageStore";
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/todos/:id',
     name: 'ToDo',
     component: ToDoSinglePage
+  },
+  {
+    path: '/store',
+    name: 'ToDos Page From Store',
+    component: ToDoPageStore
   }
 ]
 

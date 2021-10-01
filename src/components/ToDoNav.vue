@@ -9,6 +9,8 @@
       <router-link to="/todos">TODOs</router-link>
       |
       <router-link to="/about">About</router-link>
+      |
+      <router-link to="/store">TODOs (VueX)</router-link>
     </div>
   </div>
 </template>
