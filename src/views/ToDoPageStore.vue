@@ -15,15 +15,16 @@
       <ToDoForm @createToDo="createToDo"/>
     </ToDoDialog>
 
+    <div v-if="isLoading">
+      <ToDoPreloader/>
+    </div>
+
     <ToDoList
         :todoList="todoList"
         @remove="removeToDo"
         :isLoading="isLoading"
-        v-if="!isLoading"
+        v-else
     />
-        <div v-else>
-          <ToDoPreloader/>
-        </div>
   </div>
 </template>
 
@@ -52,7 +53,7 @@ export default {
       updateLS: 'todosModule/updateLocalStorage',
     }),
     createToDo(todo) {
-      this.todoList.push(todo);
+      this.todoList.unshift(todo);
       this.dialogShow = false;
       this.updateLS();
     },
