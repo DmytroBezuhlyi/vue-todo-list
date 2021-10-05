@@ -4,13 +4,11 @@
       <img :src="require('@/assets/logo.png')" alt="">
     </div>
     <div class="nav">
-      <router-link to="/">Home</router-link>
+      <router-link to="/home">Home</router-link>
       |
-      <router-link to="/todos">TODOs</router-link>
+      <router-link to="/">TODOs (VueX)</router-link>
       |
       <router-link to="/about">About</router-link>
-      |
-      <router-link to="/store">TODOs (VueX)</router-link>
     </div>
   </div>
 </template>
@@ -53,5 +51,25 @@ export default {
 
 .logo img {
   width: 100%;
+}
+
+@media (max-width: 576px) {
+  #nav {
+    justify-content: flex-end;
+  }
+
+  .logo {
+    left: 30px;
+  }
+}
+
+@media (max-width: 375px) {
+  #nav {
+    padding: 30px 15px;
+  }
+
+  .logo {
+    left: 15px;
+  }
 }
 </style>

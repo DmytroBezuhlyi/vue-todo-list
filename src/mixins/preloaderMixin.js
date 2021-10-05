@@ -6,12 +6,14 @@ export default {
   },
   methods: {
     loading() {
+      this.isLoading = true;
+
       setTimeout(() => {
-        this.isLoading = true;
-      }, 1000);
+        this.isLoading = false
+      }, 700);
     }
   },
-  beforeMount() {
+  mounted() {
     this.loading()
   }
 }

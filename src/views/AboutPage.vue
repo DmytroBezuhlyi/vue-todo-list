@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="content" v-if="isLoading">
+    <div v-if="isLoading">
+      <ToDoPreloader/>
+    </div>
+    <div class="content" v-else>
       <h1>Vue.js TODO APP</h1>
       <p>App provides you to note some tasks you need todo in future</p>
       <p>This App developed using Vue.js 2.x.x, VueX store, Vuetify lib, Vue Ui PreLoader and LocalStorage as a DataBase
@@ -8,9 +11,6 @@
       <p>App Consists of 3 pages {Home Page, About Page, Page with Todos}. Each task has title and description. You
         could
         remove or add new one whenever you want</p>
-    </div>
-    <div v-else>
-      <ToDoPreloader/>
     </div>
   </div>
 </template>

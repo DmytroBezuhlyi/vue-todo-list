@@ -39,6 +39,7 @@ h1 {
 h3 {
   margin-bottom: 1rem;
   font-weight: 500;
+  word-break: break-word;
 }
 
 h4 {

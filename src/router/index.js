@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import AboutPage from "@/views/AboutPage";
-import ToDoPage from "@/views/ToDoPage";
 import ToDoSinglePage from "@/components/ToDoSinglePage";
 import ToDoPageStore from "@/views/ToDoPageStore";
 
@@ -11,13 +10,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'HomePage',
-    component: HomePage
-  },
-  {
-    path: '/todos',
-    name: 'ToDoS Page',
-    component: ToDoPage
+    name: 'ToDo Page',
+    component: ToDoPageStore
   },
   {
     path: '/about',
@@ -26,13 +20,13 @@ const routes = [
   },
   {
     path: '/todos/:id',
-    name: 'ToDo',
+    name: 'ToDo Single Page',
     component: ToDoSinglePage
   },
   {
-    path: '/store',
-    name: 'ToDos Page From Store',
-    component: ToDoPageStore
+    path: '/home',
+    name: 'Home Page',
+    component: HomePage
   }
 ]
 
