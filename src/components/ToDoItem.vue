@@ -39,6 +39,7 @@ export default {
 .todo {
   padding: .25rem;
   width: 33.333%;
+  min-height: 195px;
 }
 
 .todo-inner {
@@ -47,8 +48,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: space-between;
   border: 2px solid teal;
+  min-height: 155px;
   border-radius: 5px;
 }
 
@@ -84,6 +86,7 @@ export default {
 @media (max-width: 576px) {
   .todo {
     width: 100%;
+    height: auto;
   }
 }
 </style>
