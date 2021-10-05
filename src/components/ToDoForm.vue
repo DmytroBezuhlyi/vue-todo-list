@@ -2,17 +2,20 @@
   <div>
     <form>
       <ToDoInput
-          class="title"
           type="text"
           placeholder="Title"
+          class="title"
           v-model="todo.title"
-          v-on:keypress="logTitle"
+          :label="'Title *'"
+          @create="createToDo"
       />
       <ToDoInput
-          class="description"
           type="text"
           placeholder="Description"
+          class="description"
           v-model="todo.description"
+          :label="'Description'"
+          @create="createToDo"
       />
       <v-btn
           class="btn create"
@@ -46,12 +49,8 @@ export default {
       this.todo.id = Date.now();
 
       if (this.todo.title.length === 0) {
-        const titleInput = document.querySelector('.title');
+        const titleInput = document.querySelector('.dialog .title .input');
         validateInput(titleInput);
-      }
-      if (this.todo.description.length === 0) {
-        const descriptionInput = document.querySelector('.description');
-        validateInput(descriptionInput);
       }
 
       function validateInput(selector) {
@@ -66,16 +65,13 @@ export default {
         }, 2000)
       }
 
-      if (this.todo.title.length > 0 && this.todo.description.length > 0) {
+      if (this.todo.title.length > 0) {
         this.$emit('createToDo', this.todo);
         this.todo = {
           title: '',
           description: ''
         }
       }
-    },
-    logTitle() {
-      console.log('2wdqwd')
     }
   },
 }
