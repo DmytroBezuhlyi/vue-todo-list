@@ -1,21 +1,30 @@
 <template>
-  <input
-      class="input"
-      type="text"
-      :value="value"
-      @input="updateInput"
-  />
+  <label>
+    {{ label }}
+    <input
+        type="text"
+        :value="value"
+        @input="updateInput"
+        class="input"
+        @keypress.enter="create"
+    /></label>
 </template>
 
 <script>
 export default {
   name: "ToDoInput",
   props: {
-    value: [String, Number]
+    value: [String, Number],
+    label: {
+      type: String
+    }
   },
   methods: {
     updateInput(ev) {
-      this.$emit('input', ev.target.value)
+      this.$emit('input', ev.target.value);
+    },
+    create() {
+      this.$emit('create');
     }
   }
 }
@@ -23,6 +32,7 @@ export default {
 
 <style scoped>
 .input {
+  margin-top: .25rem;
   width: 100%;
   border: 1px solid teal;
   border-radius: 10px;
@@ -30,7 +40,7 @@ export default {
   margin-bottom: 1.65rem;
 }
 
-.input:last-child {
+.input:nth-last-of-type {
   margin-bottom: 0;
 }
 
