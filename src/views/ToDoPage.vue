@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Page with yours TODOS</h1>
+    <h1>Page with {{ this.$store.getters.getCurrentUser }} TODOS</h1>
     <v-btn
         class="create-todo"
         @click="showDialog"
@@ -67,9 +67,19 @@ export default {
   },
   computed: {
     ...mapState({
-      todoList: state => state.todoList,
       isLoading: state => state.isLoading
-    })
+    }),
+    todoList() {
+      const currentUser = this.$store.getters.getCurrentUser;
+      console.log(currentUser)
+      if (currentUser === 'admin@gmail.com') {
+        console.log('admin')
+        return this.$store.getters.getTodoList
+      } else {
+        console.log('not admin')
+        return this.$store.getters.getTodoList.filter(todo => todo.user === currentUser)
+      }
+    }
   },
   mounted() {
     this.fetchTodoList();
