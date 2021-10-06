@@ -9,6 +9,7 @@
             placeholder="email@email.com"
             class="input"
             v-model.trim="username"
+            @keypress.enter="signIn"
         />
         <div
             class="error"
@@ -31,6 +32,7 @@
             type="password"
             class="input"
             v-model.trim="password"
+            @keypress.enter="signIn"
         />
         <div
             class="error"
@@ -48,6 +50,11 @@
 
       <v-btn @click="signIn">Sign In</v-btn>
     </form>
+
+    <hr>
+
+    <h2>Don't have an account yet?</h2>
+    <h3>Press <button @click="goToSignUp">Sign Up</button> button to open registration page</h3>
   </div>
 </template>
 
@@ -89,10 +96,8 @@ export default {
         }
 
         const auth = this.getUsers.find(u => u.id === this.username);
-        console.log(auth)
 
         if (auth) {
-          console.log(auth.password)
           if (auth.password === this.password) {
             this.$store.commit('setIsAuth', true);
             this.$store.commit('setCurrentUser', this.username);
@@ -104,6 +109,9 @@ export default {
           this.usernameExistence = true;
         }
       }
+    },
+    goToSignUp() {
+      this.$router.push('/registration');
     }
   },
   computed: {
@@ -115,5 +123,17 @@ export default {
 </script>
 
 <style scoped>
+hr {
+  margin: 1rem 0;
+}
 
+h2 {
+  margin-bottom: 1rem;
+}
+
+button {
+  border: 1px solid teal;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+  padding: 0.25rem .5rem;
+}
 </style>
