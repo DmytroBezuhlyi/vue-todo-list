@@ -18,6 +18,14 @@
 
       <v-btn
           class="auth-btn"
+          v-if="this.$route.name !== 'RegistrationPage' && !this.$store.state.isAuth"
+          @click="goToRegistration"
+      >
+        Sign Up
+      </v-btn>
+
+      <v-btn
+          class="auth-btn"
           v-if="this.$store.state.isAuth"
           @click="logout"
       >
@@ -37,6 +45,9 @@ export default {
     },
     goToLogin() {
       this.$router.push('/login');
+    },
+    goToRegistration() {
+      this.$router.push('/registration');
     }
   }
 }

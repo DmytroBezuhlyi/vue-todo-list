@@ -6,6 +6,7 @@ import ToDoSinglePage from "@/components/ToDoSinglePage";
 import ToDoPage from "@/views/ToDoPage";
 import LoginPage from "@/views/LoginPage";
 import store from '@/store/index.js';
+import RegistrationPage from "@/views/RegistrationPage";
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,18 @@ const routes = [
         path: '/login',
         name: 'LoginPage',
         component: LoginPage,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters.getIsAuth === false) {
+                next(false);
+            } else {
+                next();
+            }
+        },
+    },
+    {
+        path: '/registration',
+        name: 'RegistrationPage',
+        component: RegistrationPage,
         beforeEnter: (to, from, next) => {
             if (!store.getters.getIsAuth === false) {
                 next(false);
