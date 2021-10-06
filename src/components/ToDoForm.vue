@@ -1,14 +1,18 @@
 <template>
   <div>
     <form>
-      <ToDoInput
-          type="text"
-          placeholder="Title"
-          class="title"
-          v-model="todo.title"
-          :label="'Title *'"
-          @create="createToDo"
-      />
+      <div class="input-title">
+        <ToDoInput
+            type="text"
+            placeholder="Title"
+            class="title form-group"
+            v-model.trim="$v.todo.title.$model"
+            :label="'Title *'"
+            :class="{ 'form-group--error': $v.todo.title.$error }"
+            @create="createToDo"
+        />
+        <div class="error" v-if="!$v.todo.title.required">Field is required</div>
+      </div>
       <ToDoInput
           type="text"
           placeholder="Description"
@@ -32,6 +36,7 @@
 
 <script>
 import ToDoInput from "@/components/UI/TodoInput";
+import {required} from 'vuelidate/lib/validators'
 
 export default {
   name: "ToDoForm",
@@ -44,26 +49,16 @@ export default {
       }
     }
   },
+  validations: {
+    todo: {
+      title: {
+        required,
+      }
+    }
+  },
   methods: {
     createToDo() {
       this.todo.id = Date.now();
-
-      if (this.todo.title.length === 0) {
-        const titleInput = document.querySelector('.dialog .title .input');
-        validateInput(titleInput);
-      }
-
-      function validateInput(selector) {
-        selector.classList.add('error');
-        const errorMsgHTML = `<p class="error-msg" style="color: red; text-align: center; font-weight: bold; margin: 0.25rem 0">Title field is empty, please fill the field</p>`
-
-        selector.insertAdjacentHTML('afterend', errorMsgHTML);
-
-        setTimeout(() => {
-          selector.nextSibling.remove();
-          selector.classList.remove('error');
-        }, 2000)
-      }
 
       if (this.todo.title.length > 0) {
         this.$emit('createToDo', this.todo);
@@ -81,5 +76,16 @@ export default {
 form {
   display: flex;
   flex-direction: column;
+}
+
+.input-title {
+  position: relative;
+}
+
+.error {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
 }
 </style>

@@ -1,13 +1,14 @@
 <template>
-  <label>
-    {{ label }}
+  <div>
+    <label>{{ label }}</label>
     <input
         type="text"
+        class="input"
         :value="value"
         @input="updateInput"
-        class="input"
         @keypress.enter="create"
-    /></label>
+    />
+  </div>
 </template>
 
 <script>
@@ -34,18 +35,18 @@ export default {
 .input {
   margin-top: .25rem;
   width: 100%;
-  border: 1px solid teal;
+  border: 2px solid teal;
   border-radius: 10px;
   padding: 0.5rem 1rem;
   margin-bottom: 1.65rem;
+  outline: none;
 }
 
 .input:nth-last-of-type {
   margin-bottom: 0;
 }
 
-.error {
+.form-group--error input {
   border-color: red;
-  margin-bottom: 0;
 }
 </style>

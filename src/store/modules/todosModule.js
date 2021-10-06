@@ -29,7 +29,7 @@ export const todosModule = {
       try {
         setTimeout(() => {
           if (localStorage.getItem('list') && localStorage.getItem('list') !== 'undefined') {
-            const list = JSON.parse(localStorage.getItem('list'))
+            const list = JSON.parse(localStorage.getItem('list'));
             commit("setTodoList", list);
             commit("setIsLoading", false);
           }
