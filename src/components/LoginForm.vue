@@ -6,10 +6,23 @@
         <label>Login</label>
         <input
             type="text"
-            placeholder="password"
+            placeholder="email@email.com"
             class="input"
             v-model.trim="username"
         />
+        <div
+            class="error"
+            v-if="usernameErr"
+        >
+          Username is required
+        </div>
+
+        <div
+            class="error"
+            v-if="usernameExistence"
+        >
+          Users doesn't exist
+        </div>
       </div>
 
       <div class="form-group">
@@ -17,9 +30,20 @@
         <input
             type="password"
             class="input"
-            placeholder="password"
             v-model.trim="password"
         />
+        <div
+            class="error"
+            v-if="passwordErr"
+        >
+          Password is required
+        </div>
+        <div
+            class="error"
+            v-if="passwordIncorrect"
+        >
+          Password is invalid
+        </div>
       </div>
 
       <v-btn @click="signIn">Sign In</v-btn>
@@ -28,44 +52,68 @@
 </template>
 
 <script>
-import {required} from "vuelidate/lib/validators";
+
+import {mapGetters} from "vuex";
 
 export default {
   name: "LoginForm",
   data() {
     return {
-      username: 'qwerty',
+      username: '',
       password: '',
       showErr: false,
-    }
-  },
-  validations: {
-    username: {
-      required,
-    },
-    password: {
-      required
+      usernameErr: false,
+      usernameExistence: false,
+      passwordErr: false,
+      passwordIncorrect: false
     }
   },
   methods: {
     signIn() {
-      if (this.username === this.$store.state.admin.username && this.password === this.$store.state.admin.password) {
-        this.$store.commit('setIsAuth', true)
-        this.$router.push({name: 'ToDosPage'})
+      if (!this.username.length) {
+        this.usernameErr = true;
+        return;
       } else {
-        this.showErr = true;
-        setTimeout(() => {
-          this.showErr = false;
-        }, 2000)
+        this.usernameErr = false;
+      }
+
+      if (!this.password.length) {
+        this.passwordErr = true;
+      } else {
+        this.passwordErr = false;
+
+        if (this.username === this.$store.state.admin.username && this.password === this.$store.state.admin.password) {
+          this.$store.commit('setIsAuth', true);
+          this.$store.commit('setCurrentUser', this.username);
+          this.$router.push({name: 'ToDosPage'});
+        }
+
+        const auth = this.getUsers.find(u => u.id === this.username);
+        console.log(auth)
+
+        if (auth) {
+          console.log(auth.password)
+          if (auth.password === this.password) {
+            this.$store.commit('setIsAuth', true);
+            this.$store.commit('setCurrentUser', this.username);
+            this.$router.push({name: 'ToDosPage'});
+          } else {
+            this.passwordIncorrect = true;
+          }
+        } else {
+          this.usernameExistence = true;
+        }
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      getUsers: 'getUserList'
+    })
   }
 }
 </script>
 
 <style scoped>
-.login-fail {
-  color: red;
-  font-weight: 800;
-}
+
 </style>
