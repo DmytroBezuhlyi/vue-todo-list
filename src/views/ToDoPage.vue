@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Page with {{ this.$store.getters.getCurrentUser }} TODOS</h1>
+    <h1>Page with {{ this.$store.getters.getCurrentUser !== 'admin@gmail.com' ? this.$store.getters.getCurrentUser : 'yours' }} TODOS</h1>
     <v-btn
         class="create-todo"
         @click="showDialog"

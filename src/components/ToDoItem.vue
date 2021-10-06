@@ -19,6 +19,7 @@
           Remove
         </v-btn>
       </div>
+      <h5 v-if="this.$store.getters.getCurrentUser === 'admin@gmail.com'">Author: {{ this.todo.user ? this.todo.user : 'unknown' }}</h5>
     </div>
   </div>
 </template>
@@ -36,6 +37,9 @@ export default {
 </script>
 
 <style scoped>
+h5 {
+  margin-top: .5rem;
+}
 .todo {
   padding: .25rem;
   width: 33.333%;
