@@ -4,8 +4,8 @@
       <ToDoPreloader/>
     </div>
     <div class="single-todo" v-else>
-      <h1>{{ this.todo[0].title }}</h1>
-      <p>{{ this.todo[0].description }}</p>
+      <h1> {{ getTodoById.title }}</h1>
+      <p v-if="getTodoById.description">{{ getTodoById.description }}</p>
     </div>
     <v-btn @click="goBack">Go Back</v-btn>
   </div>
@@ -14,36 +14,35 @@
 <script>
 import ToDoPreloader from "@/components/UI/ToDoPreloader";
 import preloaderMixin from "@/mixins/preloaderMixin";
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "ToDoSinglePage",
   components: {ToDoPreloader},
   mixins: [preloaderMixin],
+  data() {
+    return {
+      id: +this.$route.params.id
+    }
+  },
   methods: {
     ...mapActions({
-      fetchTodoList: 'todosModule/fetchList',
-      fetchTodo: 'todosModule/fetchTodo'
+      fetchTodoList: 'fetchList',
     }),
     goBack() {
       return this.$router.go(-1);
     }
   },
   computed: {
-    ...mapState({
-      todo: state => state.todosModule.todo
-    }),
     ...mapGetters({
-      getTodoList: 'todosModule/getTodoList',
-      getSingleTodo: 'todosModule/getTodo'
-    })
+      getTodoList: 'getTodoList'
+    }),
+    getTodoById() {
+      return this.$store.getters.getTodoById(this.id);
+    }
   },
-  beforeMount() {
+  created() {
     this.fetchTodoList();
-
-  },
-  mounted() {
-    this.fetchTodo(this.$route.params.id);
   }
 }
 </script>
