@@ -45,12 +45,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setLoading: "todosModule/setIsLoading",
-      setTodoList: "todosModule/setTodoList"
+      setLoading: "setIsLoading",
+      setTodoList: "setTodoList"
     }),
     ...mapActions({
-      fetchTodoList: 'todosModule/fetchList',
-      updateLS: 'todosModule/updateLocalStorage',
+      fetchTodoList: 'fetchList',
+      updateLS: 'updateLocalStorage',
     }),
     createToDo(todo) {
       this.todoList.unshift(todo);
@@ -67,8 +67,8 @@ export default {
   },
   computed: {
     ...mapState({
-      todoList: state => state.todosModule.todoList,
-      isLoading: state => state.todosModule.isLoading
+      todoList: state => state.todoList,
+      isLoading: state => state.isLoading
     })
   },
   mounted() {
