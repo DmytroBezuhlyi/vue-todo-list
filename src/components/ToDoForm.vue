@@ -59,6 +59,7 @@ export default {
   methods: {
     createToDo() {
       this.todo.id = Date.now();
+      this.todo.user = this.$store.getters.getCurrentUser;
 
       if (this.todo.title.length > 0) {
         this.$emit('createToDo', this.todo);
@@ -72,20 +73,13 @@ export default {
 }
 </script>
 
-<style scoped>
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.input {
-  position: relative;
-}
-.input-title {
+<style>
+.input,
+.form-group {
   position: relative;
 }
 
-.error {
+.form-group .error {
   position: absolute;
   left: 50%;
   bottom: 0;
