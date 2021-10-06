@@ -2,8 +2,9 @@
   <div>
     <label>{{ label }}</label>
     <input
-        type="text"
+        :type="type"
         class="input"
+        :placeholder="placeholder"
         :value="value"
         @input="updateInput"
         @keypress.enter="create"
@@ -18,7 +19,13 @@ export default {
     value: [String, Number],
     label: {
       type: String
-    }
+    },
+    type: {
+      type: String
+    },
+    placeholder: {
+      type: String
+    },
   },
   methods: {
     updateInput(ev) {
@@ -31,7 +38,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .input {
   margin-top: .25rem;
   width: 100%;

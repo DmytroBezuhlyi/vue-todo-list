@@ -4,7 +4,7 @@
       <div class="input-title">
         <ToDoInput
             type="text"
-            placeholder="Title"
+            placeholder="What should you do"
             class="title form-group"
             v-model.trim="$v.todo.title.$model"
             :label="'Title *'"
@@ -78,6 +78,9 @@ form {
   flex-direction: column;
 }
 
+.input {
+  position: relative;
+}
 .input-title {
   position: relative;
 }

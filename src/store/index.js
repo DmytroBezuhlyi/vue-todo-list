@@ -6,7 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: () => ({
     todoList: [],
-    isLoading: false
+    isLoading: false,
+    isAuth: false,
+    admin: {
+      username: 'admin@gmail.com',
+      password: 'pass'
+    }
   }),
   getters: {
     getTodoList: (state) => {
@@ -14,7 +19,10 @@ export default new Vuex.Store({
     },
     getTodoById: (state) => (id) => {
       return state.todoList.find(td => td.id === id);
-    }
+    },
+    getIsAuth: (state) => {
+      return state.isAuth
+    },
   },
   mutations: {
     setTodoList(state, list) {
@@ -22,7 +30,10 @@ export default new Vuex.Store({
     },
     setIsLoading(state, load) {
       state.isLoading = load;
-    }
+    },
+    setIsAuth(state, status) {
+      state.isAuth = status;
+    },
   },
   actions: {
     fetchList({commit}) {
@@ -45,6 +56,6 @@ export default new Vuex.Store({
     },
     updateLocalStorage({state}) {
       localStorage.setItem('list', JSON.stringify(state.todoList));
-    }
+    },
   }
 })
