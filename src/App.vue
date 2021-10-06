@@ -9,9 +9,20 @@
 
 <script>
 import ToDoNav from "@/components/ToDoNav";
+import {mapActions} from "vuex";
 
 export default {
-  components: {ToDoNav}
+  components: {ToDoNav},
+  methods: {
+    ...mapActions({
+      fetchUsers: 'fetchUserList',
+      fetchTodos: 'fetchList'
+    })
+  },
+  created() {
+    this.fetchUsers();
+    this.fetchTodos();
+  }
 }
 </script>
 
