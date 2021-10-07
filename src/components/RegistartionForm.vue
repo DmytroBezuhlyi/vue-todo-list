@@ -68,7 +68,6 @@
       </div>
 
       <v-btn @click="signUp">Sign Up</v-btn>
-
     </form>
   </div>
 </template>
@@ -105,6 +104,8 @@ export default {
         this.errors.passwordRepeat = true;
       }
 
+      this.check();
+
       if (this.errors.common) {
         this.check();
         this.validateEmail();
@@ -129,7 +130,7 @@ export default {
 
         this.$store.commit('setIsAuth', true);
         this.$store.commit('setCurrentUser', this.username)
-        this.$router.push('/todos')
+        this.$router.push({name: 'ToDosPage'})
       }
     },
     validateEmail() {
