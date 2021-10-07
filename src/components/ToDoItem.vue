@@ -54,7 +54,7 @@ h5 {
   align-items: flex-start;
   justify-content: space-between;
   border: 2px solid teal;
-  min-height: 155px;
+  min-height: 180px;
   border-radius: 5px;
 }
 

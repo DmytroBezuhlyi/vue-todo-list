@@ -8,10 +8,10 @@
             class="title form-group"
             v-model.trim="$v.todo.title.$model"
             :label="'Title *'"
-            :class="{ 'form-group--error': $v.todo.title.$error }"
+            :class="{ 'form-group--error': !$v.todo.title.required }"
             @create="createToDo"
         />
-        <div class="error" v-if="!$v.todo.title.required">Field is required</div>
+        <div class="error" v-if="$v.todo.title.$error">Field is required</div>
       </div>
       <ToDoInput
           type="text"
@@ -79,6 +79,11 @@ export default {
   position: relative;
 }
 
+.input-title {
+  position: relative;
+}
+
+.form-group + .error,
 .form-group .error {
   position: absolute;
   left: 50%;
