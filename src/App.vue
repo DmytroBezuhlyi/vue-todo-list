@@ -16,12 +16,14 @@ export default {
   methods: {
     ...mapActions({
       fetchUsers: 'fetchUserList',
-      fetchTodos: 'fetchList'
+      fetchTodos: 'fetchList',
+      checkIsMobile: 'isMobile'
     })
   },
   created() {
     this.fetchUsers();
     this.fetchTodos();
+    this.checkIsMobile();
   }
 }
 </script>

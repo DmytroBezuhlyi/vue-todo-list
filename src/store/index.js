@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isLoading: false,
     isAuth: false,
     currentUser: '',
+    isMobile: false,
     admin: {
       username: 'admin@gmail.com',
       password: 'pass'
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     getCurrentUser: (state) => {
       return state.currentUser;
+    },
+    getIsMobile: (state) => {
+      return state.isMobile;
     }
   },
   mutations: {
@@ -47,6 +51,9 @@ export default new Vuex.Store({
     },
     setCurrentUser(state, user) {
       state.currentUser = user;
+    },
+    setIsMobile(state, status) {
+      state.isMobile = status;
     }
   },
   actions: {
@@ -86,5 +93,8 @@ export default new Vuex.Store({
     updateLocalStorageUsers({state}) {
       localStorage.setItem('users', JSON.stringify(state.userList));
     },
+    isMobile({commit}) {
+      commit('setIsMobile', window.innerWidth < 767);
+    }
   }
 })

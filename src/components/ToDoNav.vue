@@ -3,7 +3,14 @@
     <div class="logo">
       <img :src="require('@/assets/logo.png')" alt="">
     </div>
-    <div class="nav">
+    <div
+        class="nav"
+        :class="{
+                  'nav-mobile': this.$store.getters.getIsMobile,
+                  'open': isNavOpen
+        }"
+        @click="toggleMobileNav"
+    >
       <router-link to="/">Home</router-link>
       <router-link to="/todos">TODOs</router-link>
       <router-link to="/about">About</router-link>
@@ -32,12 +39,27 @@
         Log out
       </v-btn>
     </div>
+
+    <div
+        class="burger"
+        :class="{'open': isNavOpen}"
+        v-if="this.$store.getters.getIsMobile"
+        @click="toggleMobileNav"
+    >
+      <span></span><span></span><span></span>
+    </div>
+
   </div>
 </template>
 
 <script>
 export default {
   name: "Nav",
+  data() {
+    return {
+      isNavOpen: false
+    }
+  },
   methods: {
     logout() {
       this.$store.commit('setIsAuth', false)
@@ -48,8 +70,14 @@ export default {
     },
     goToRegistration() {
       this.$router.push('/registration');
+    },
+    toggleMobileNav() {
+      if (this.$store.getters.getIsMobile) {
+        console.log('to')
+        this.isNavOpen = !this.isNavOpen;
+      }
     }
-  }
+  },
 }
 </script>
 
@@ -91,6 +119,69 @@ export default {
 .auth-btn {
   height: 25px !important;
   margin: .25rem;
+}
+
+.nav-mobile {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: teal;
+  z-index: 1;
+  transition: all .5s ease-in-out;
+  transform: translateY(-100%);
+}
+
+#nav .nav-mobile a {
+  margin: .75rem;
+}
+
+.nav-mobile.open {
+  transform: unset;
+}
+
+.burger {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 30px;
+  height: 15px;
+  right: 20px;
+  z-index: 1;
+  transition: all .5s ease-in-out;
+}
+
+.burger span {
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 2px;
+  background-color: aliceblue;
+  transition: all .5s ease-in-out;
+}
+
+.burger.open span {
+  position: absolute;
+  top: 5px;
+  transform: rotate(45deg);
+}
+
+.burger.open span:last-of-type {
+  transform: rotate(-45deg);
+}
+
+.burger span:nth-of-type(2) {
+  margin: .35rem 0;
+}
+
+.burger.open span:nth-of-type(2) {
+  opacity: 0;
+  transform: none;
 }
 
 @media (max-width: 576px) {
