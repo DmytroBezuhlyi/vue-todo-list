@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style>
-.input {
+input {
   margin-top: .25rem;
   width: 100%;
   border: 2px solid teal;
@@ -53,7 +53,20 @@ export default {
   margin-bottom: 0;
 }
 
-.form-group--error input {
-  border-color: red;
+input.form-group--error {
+  border: 2px solid red;
+}
+
+.form-group {
+  position: relative;
+}
+
+.invalid-feedback {
+  color: white;
+  background-color: red;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
