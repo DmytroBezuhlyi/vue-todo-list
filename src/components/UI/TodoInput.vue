@@ -5,9 +5,8 @@
         :type="type"
         class="input"
         :placeholder="placeholder"
-        :value="value"
+        :value="this.inputValue"
         @input="updateInput"
-        @keypress.enter="create"
     />
   </div>
 </template>
@@ -16,7 +15,7 @@
 export default {
   name: "ToDoInput",
   props: {
-    value: [String, Number],
+    inputValue: [String, Number],
     label: {
       type: String
     },
@@ -30,9 +29,6 @@ export default {
   methods: {
     updateInput(ev) {
       this.$emit('input', ev.target.value);
-    },
-    create() {
-      this.$emit('create');
     }
   }
 }

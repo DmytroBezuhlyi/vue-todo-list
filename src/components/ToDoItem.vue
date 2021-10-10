@@ -13,6 +13,12 @@
           Open
         </v-btn>
         <v-btn
+            class="edit"
+            @click="$emit('edit', todo)"
+        >
+          Edit
+        </v-btn>
+        <v-btn
             class="error"
             @click="$emit('remove', todo)"
         >

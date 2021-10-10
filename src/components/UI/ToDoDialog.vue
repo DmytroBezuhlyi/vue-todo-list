@@ -20,7 +20,10 @@ import toggleMixin from "@/mixins/toggleMixin";
 
 export default {
   name: "ToDoDialog",
-  mixins: [toggleMixin]
+  mixins: [toggleMixin],
+  props: {
+    editedTodo: [Object]
+  }
 }
 </script>
 

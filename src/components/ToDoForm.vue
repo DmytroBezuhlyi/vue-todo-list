@@ -9,7 +9,7 @@
             v-model.trim="$v.todo.title.$model"
             :label="'Title *'"
             :class="{ 'form-group--error': !$v.todo.title.required }"
-            @create="createToDo"
+            :inputValue="editedTodo.title"
         />
         <div class="error" v-if="$v.todo.title.$error">Field is required</div>
       </div>
@@ -19,13 +19,24 @@
           class="description"
           v-model="todo.description"
           :label="'Description'"
-          @create="createToDo"
+          :inputValue="editedTodo.description"
       />
       <v-btn
           class="btn create"
           depressed
           elevation="2"
           outlined
+          v-if="edit"
+          @click="updateToDo"
+      >
+        Update
+      </v-btn>
+      <v-btn
+          class="btn create"
+          depressed
+          elevation="2"
+          outlined
+          v-if="!edit"
           @click="createToDo"
       >
         Create
@@ -41,6 +52,16 @@ import {required} from 'vuelidate/lib/validators'
 export default {
   name: "ToDoForm",
   components: {ToDoInput},
+  props: {
+    edit: {
+      type: Boolean,
+      default: false
+    },
+    editedTodo: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       todo: {
@@ -68,8 +89,22 @@ export default {
           description: ''
         }
       }
-    }
+    },
+    updateToDo() {
+      if (this.todo.title.length > 0) {
+        this.$emit('updateToDo', this.todo);
+        this.todo = {
+          title: '',
+          description: ''
+        }
+      }
+    },
   },
+  mounted() {
+    if (this.edit) {
+      this.todo = this.editedTodo
+    }
+  }
 }
 </script>
 

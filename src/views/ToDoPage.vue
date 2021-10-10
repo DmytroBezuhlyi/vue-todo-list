@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>Page with {{ this.$store.getters.getCurrentUser !== 'admin@gmail.com' ? this.$store.getters.getCurrentUser : 'yours' }} TODOS</h1>
+    <h1>Page with
+      {{ this.$store.getters.getCurrentUser !== 'admin@gmail.com' ? this.$store.getters.getCurrentUser : 'yours' }}
+      TODOS</h1>
     <v-btn
         class="create-todo"
         @click="showDialog"
@@ -9,10 +11,17 @@
     </v-btn>
 
     <ToDoDialog
-        @update:show="dialogShow = $event"
-        :show="dialogShow"
+        :show.sync="dialogShow"
+        :edit.sync="todoEditing"
+        :editedTodo="todo"
     >
-      <ToDoForm @createToDo="createToDo"/>
+      <ToDoForm
+          @createToDo="createToDo"
+          @editToDo="updateToDo"
+          @updateToDo="updateToDo"
+          :edit.sync="todoEditing"
+          :editedTodo="todo"
+      />
     </ToDoDialog>
 
     <div v-if="isLoading">
@@ -24,6 +33,7 @@
         @remove="removeToDo"
         :isLoading="isLoading"
         v-else
+        @edit="edit"
     />
   </div>
 </template>
@@ -41,6 +51,8 @@ export default {
   data() {
     return {
       dialogShow: false,
+      todoEditing: false,
+      todo: {},
     }
   },
   methods: {
@@ -61,9 +73,29 @@ export default {
       this.setTodoList(this.todoList.filter(t => t.id !== todo.id))
       this.updateLS();
     },
+    edit(todo) {
+      this.todoEditing = true;
+      this.dialogShow = true;
+      this.todo = todo;
+    },
+    updateToDo(todo) {
+      this.$store.getters.getTodoList.forEach(td => {
+        if (td.id === todo.id) {
+          td.title = todo.title;
+          td.description = todo.description;
+        }
+      });
+
+      this.todoEditing = false;
+      this.dialogShow = false;
+      this.updateLS();
+    },
     showDialog() {
       this.dialogShow = true;
-    }
+      if (!this.todoEditing) {
+        this.todo = {}
+      }
+    },
   },
   computed: {
     ...mapState({
