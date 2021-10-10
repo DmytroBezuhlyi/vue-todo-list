@@ -9,7 +9,7 @@
 
 <script>
 import ToDoNav from "@/components/ToDoNav";
-import {mapActions} from "vuex";
+import {mapActions, mapMutations} from "vuex";
 
 export default {
   components: {ToDoNav},
@@ -17,13 +17,26 @@ export default {
     ...mapActions({
       fetchUsers: 'fetchUserList',
       fetchTodos: 'fetchList',
-      checkIsMobile: 'isMobile'
-    })
+      checkIsMobile: 'isMobile',
+      checkIsLoggedIn: 'isLoggedIn'
+    }),
+    ...mapMutations(['setCurrentUser', 'setIsAuth']),
+    checkIsLoggedIn() {
+      const token = 'token';
+      const cookies = this.$cookies;
+
+      if (cookies.isKey(token)) {
+        const loggedUser = cookies.get(token);
+        this.setCurrentUser(loggedUser);
+        this.setIsAuth(true);
+      }
+    }
   },
   created() {
     this.fetchUsers();
     this.fetchTodos();
     this.checkIsMobile();
+    this.checkIsLoggedIn();
   }
 }
 </script>

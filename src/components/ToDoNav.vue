@@ -31,6 +31,10 @@
         Sign Up
       </v-btn>
 
+      <span v-if="this.getCurrentUser ">|</span>
+
+      <a>{{ this.getCurrentUser }}</a>
+
       <v-btn
           class="auth-btn"
           v-if="this.$store.state.isAuth"
@@ -53,6 +57,8 @@
 </template>
 
 <script>
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
   name: "Nav",
   data() {
@@ -61,8 +67,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setIsAuth', 'setCurrentUser']),
     logout() {
-      this.$store.commit('setIsAuth', false)
+      this.$cookies.remove('token');
+
+      this.setIsAuth(false);
+      this.setCurrentUser('');
+
       this.$router.push('/');
     },
     goToLogin() {
@@ -73,11 +84,13 @@ export default {
     },
     toggleMobileNav() {
       if (this.$store.getters.getIsMobile) {
-        console.log('to')
         this.isNavOpen = !this.isNavOpen;
       }
     }
   },
+  computed: {
+    ...mapGetters(['getCurrentUser'])
+  }
 }
 </script>
 
@@ -93,11 +106,17 @@ export default {
   justify-content: center;
 }
 
-#nav a {
+#nav a,
+#nav button {
   font-weight: bold;
   color: #ffffff;
   text-decoration: none;
-  margin: 0 .5rem;
+  margin: 0 .75rem;
+}
+
+#nav button {
+  color: #000;
+  font-weight: normal;
 }
 
 #nav a.router-link-exact-active {
@@ -119,6 +138,11 @@ export default {
 .auth-btn {
   height: 25px !important;
   margin: .25rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
 }
 
 .nav-mobile {

@@ -7,8 +7,10 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import loader from "vue-ui-preloader";
 import {Vuelidate} from "vuelidate";
+import VueCookies from 'vue-cookies';
 
 Vue.use(Vuelidate);
+Vue.use(VueCookies);
 
 Vue.config.productionTip = false
 

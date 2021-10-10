@@ -106,7 +106,10 @@ export default {
           if (password === this.$store.state.admin.password) {
             this.setIsAuth(true);
             this.setCurrentUser(username);
-            this.$router.push({name: 'ToDosPage'});
+
+            this.$cookies.set('token', username, 60 * 30);
+
+            this.$router.replace({name: 'ToDosPage'});
           } else {
             this.errors.passwordNotMatch = true;
           }
@@ -114,13 +117,15 @@ export default {
           if (password === user.password) {
             this.setIsAuth(true);
             this.setCurrentUser(username);
-            this.$router.push({name: 'ToDosPage'});
+
+            this.$cookies.set('token', username, 60 * 30);
+
+            this.$router.replace({name: 'ToDosPage'});
           } else {
             this.errors.passwordNotMatch = true;
           }
         }
       } else {
-        console.log('error user')
         this.errors.userNotExist = true;
       }
     },
@@ -134,7 +139,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getUsers: 'getUserList'
+      getUsers: 'getUserList',
+      getCurrentUser: 'getCurrentUser'
     }),
   }
 }

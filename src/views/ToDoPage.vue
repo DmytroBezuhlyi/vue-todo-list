@@ -24,14 +24,14 @@
       />
     </ToDoDialog>
 
-    <div v-if="isLoading">
+    <div v-if="getIsLoading">
       <ToDoPreloader/>
     </div>
 
     <ToDoList
         :todoList="todoListRestricted"
         @remove="removeToDo"
-        :isLoading="isLoading"
+        :isLoading="getIsLoading"
         v-else
         @edit="edit"
     />
@@ -44,7 +44,7 @@ import ToDoList from "@/components/ToDoList";
 import ToDoForm from "@/components/ToDoForm";
 import ToDoDialog from "@/components/UI/ToDoDialog";
 import ToDoPreloader from "@/components/UI/ToDoPreloader";
-import {mapActions, mapMutations, mapState} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default {
   components: {ToDoPreloader, ToDoDialog, ToDoForm, ToDoList, ToDoNav},
@@ -65,12 +65,12 @@ export default {
       updateLS: 'updateLocalStorage',
     }),
     createToDo(todo) {
-      this.todoList.unshift(todo);
+      this.getTodoList.unshift(todo);
       this.dialogShow = false;
       this.updateLS();
     },
     removeToDo(todo) {
-      this.setTodoList(this.todoList.filter(t => t.id !== todo.id))
+      this.setTodoList(this.getTodoList.filter(t => t.id !== todo.id))
       this.updateLS();
     },
     edit(todo) {
@@ -79,7 +79,7 @@ export default {
       this.todo = todo;
     },
     updateToDo(todo) {
-      this.$store.getters.getTodoList.forEach(td => {
+      this.getTodoList.forEach(td => {
         if (td.id === todo.id) {
           td.title = todo.title;
           td.description = todo.description;
@@ -98,16 +98,13 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      todoList: state => state.todoList,
-      isLoading: state => state.isLoading
-    }),
+    ...mapGetters(['getTodoList', 'getIsLoading']),
     todoListRestricted() {
       const currentUser = this.$store.getters.getCurrentUser;
       if (currentUser === 'admin@gmail.com') {
-        return this.$store.getters.getTodoList
+        return this.getTodoList
       } else {
-        return this.$store.getters.getTodoList.filter(todo => todo.user === currentUser)
+        return this.getTodoList.filter(todo => todo.user === currentUser)
       }
     }
   },

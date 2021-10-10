@@ -129,12 +129,15 @@ export default {
         }
 
         this.$store.commit('setIsAuth', true);
-        this.$store.commit('setCurrentUser', this.username)
-        this.$router.push({name: 'ToDosPage'})
+        this.$store.commit('setCurrentUser', this.username);
+
+        this.$cookies.set('token', user.id)
+
+        this.$router.replace({name: 'ToDosPage'})
       }
     },
     validateEmail() {
-      this.errors.usernameValidation = !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.username));
+      this.errors.usernameValidation = !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.username));
     },
     validatePassword() {
       this.errors.password = this.password.length < 8;

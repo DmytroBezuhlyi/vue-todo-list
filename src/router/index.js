@@ -5,7 +5,8 @@ import AboutPage from "@/views/AboutPage";
 import ToDoSinglePage from "@/components/ToDoSinglePage";
 import ToDoPage from "@/views/ToDoPage";
 import LoginPage from "@/views/LoginPage";
-import store from '@/store/index.js';
+import store from "@/store/index.js";
+import cookies from 'vue-cookies';
 import RegistrationPage from "@/views/RegistrationPage";
 
 Vue.use(VueRouter)
@@ -16,10 +17,10 @@ const routes = [
         name: 'ToDosPage',
         component: ToDoPage,
         beforeEnter: (to, from, next) => {
-            if (store.getters.getIsAuth === false) {
-                next({name: 'LoginPage'});
-            } else {
+            if (cookies.isKey('token')) {
                 next();
+            } else {
+                next({name: 'LoginPage'});
             }
         }
     },
@@ -43,7 +44,7 @@ const routes = [
         name: 'LoginPage',
         component: LoginPage,
         beforeEnter: (to, from, next) => {
-            if (!store.getters.getIsAuth === false) {
+            if (cookies.isKey('token')) {
                 next(false);
             } else {
                 next();
