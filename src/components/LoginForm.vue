@@ -5,9 +5,15 @@
     <form @submit.prevent="signIn">
       <div class="form-group">
         <label for="text">Email</label>
-        <input type="text" v-model="$v.user.username.$model" id="text" name="text" class="form-control"
-               :class="{ 'form-group--error': submitted && $v.user.username.$error }"
-               @input="cleanExistingErr"
+        <input
+            type="email"
+            v-model="$v.user.username.$model"
+            id="text"
+            name="text"
+            class="form-control"
+            :class="{ 'form-group--error': submitted && $v.user.username.$error }"
+            @input="cleanExistingErr"
+            @keypress.enter="signIn"
         />
         <div v-if="submitted && $v.user.username.$error || submitted && this.errors.userNotExist"
              class="invalid-feedback">
@@ -18,14 +24,25 @@
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" v-model="$v.user.password.$model" id="password" name="password" class="form-control"
-               :class="{ 'form-group--error': submitted && $v.user.password.$error }"/>
-        <div v-if="submitted && $v.user.password.$error" class="invalid-feedback">
+        <input
+            type="password"
+            v-model="$v.user.password.$model"
+            id="password"
+            name="password"
+            class="form-control"
+            :class="{ 'form-group--error': submitted && $v.user.password.$error }"
+            @input="cleanExistingErr"
+            @keypress.enter="signIn"
+        />
+        <div v-if="submitted && $v.user.password.$error || submitted && this.errors.passwordNotMatch"
+             class="invalid-feedback">
           <span v-if="!$v.user.password.required">Password is required</span>
+          <span v-if="this.errors.passwordNotMatch">Password is incorrect</span>
         </div>
       </div>
+
       <div class="form-group">
-        <button class="btn btn-primary">Register</button>
+        <v-btn class="btn btn-primary" @click="signIn">Sign In</v-btn>
       </div>
     </form>
 
@@ -112,6 +129,7 @@ export default {
     },
     cleanExistingErr() {
       this.errors.userNotExist = false;
+      this.errors.passwordNotMatch = false;
     }
   },
   computed: {
