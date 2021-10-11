@@ -5,7 +5,6 @@ import AboutPage from "@/views/AboutPage";
 import ToDoSinglePage from "@/components/ToDoSinglePage";
 import ToDoPage from "@/views/ToDoPage";
 import LoginPage from "@/views/LoginPage";
-import store from "@/store/index.js";
 import cookies from 'vue-cookies';
 import RegistrationPage from "@/views/RegistrationPage";
 
@@ -13,31 +12,14 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/todos',
-        name: 'ToDosPage',
-        component: ToDoPage,
-        beforeEnter: (to, from, next) => {
-            if (cookies.isKey('token')) {
-                next();
-            } else {
-                next({name: 'LoginPage'});
-            }
-        }
+        path: '/',
+        name: 'HomePage',
+        component: HomePage,
     },
     {
         path: '/about',
         name: 'AboutPage',
         component: AboutPage,
-    },
-    {
-        path: '/todos/:id',
-        name: 'ToDoSinglePage',
-        component: ToDoSinglePage,
-    },
-    {
-        path: '/',
-        name: 'HomePage',
-        component: HomePage,
     },
     {
         path: '/login',
@@ -55,14 +37,24 @@ const routes = [
         path: '/registration',
         name: 'RegistrationPage',
         component: RegistrationPage,
+    },
+    {
+        path: '/todos',
+        name: 'ToDosPage',
+        component: ToDoPage,
         beforeEnter: (to, from, next) => {
-            if (!store.getters.getIsAuth === false) {
-                next(false);
-            } else {
+            if (cookies.isKey('token')) {
                 next();
+            } else {
+                next({name: 'LoginPage'});
             }
-        },
-    }
+        }
+    },
+    {
+        path: '/todos/:id',
+        name: 'ToDoSinglePage',
+        component: ToDoSinglePage,
+    },
 ]
 
 const router = new VueRouter({
