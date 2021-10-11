@@ -141,7 +141,7 @@ export default {
 
         this.$cookies.set('token', username);
 
-        this.$router.replace('/todos');
+        this.$router.push('/todos');
       }
     },
     cleanExistingErr() {

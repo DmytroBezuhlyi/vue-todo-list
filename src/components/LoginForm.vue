@@ -109,7 +109,7 @@ export default {
 
             this.$cookies.set('token', username, 60 * 30);
 
-            this.$router.replace({name: 'ToDosPage'});
+            this.$router.push({name: 'ToDosPage'});
           } else {
             this.errors.passwordNotMatch = true;
           }
@@ -120,7 +120,7 @@ export default {
 
             this.$cookies.set('token', username, 60 * 30);
 
-            this.$router.replace({name: 'ToDosPage'});
+            this.$router.push({name: 'ToDosPage'});
           } else {
             this.errors.passwordNotMatch = true;
           }
