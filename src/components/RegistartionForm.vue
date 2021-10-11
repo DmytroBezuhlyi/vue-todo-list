@@ -1,164 +1,155 @@
 <template>
   <div ref="login-form">
     <h1>Sign Up</h1>
-    <form>
-      <div
-          class="form-group"
-          :class="{'form-group--error': errors.usernameValidation }"
-      >
-        <label>Login</label>
+
+    <form @submit.prevent="signUp">
+      <div class="form-group">
+        <label for="text">Email</label>
         <input
-            type="text"
-            placeholder="email@email.com"
-            class="input"
-            v-model.trim="username"
-            @input="validateEmail"
+            type="email"
+            v-model="$v.user.username.$model"
+            id="text"
+            name="text"
+            class="form-control"
+            :class="{ 'form-group--error': submitted && $v.user.username.$error || submitted && this.errors.userExistenceError }"
+            @input="cleanExistingErr"
+            @keypress.enter="signUp"
         />
-        <div
-            class="error"
-            v-if="errors.usernameValidation"
-        >
-          Username is invalid
-        </div>
-        <div
-            class="error"
-            v-else-if="errors.usernameExisting"
-        >
-          Username is already exists
+        <div v-if="submitted && $v.user.username.$error || submitted && this.errors.userExistenceError"
+             class="invalid-feedback">
+          <span v-if="!$v.user.username.required">Email is required</span>
+          <span v-if="!$v.user.username.email">Email is invalid</span>
+          <span v-if="this.errors.userExistenceError">User has already existed</span>
         </div>
       </div>
-
-      <div
-          class="form-group"
-          :class="{'form-group--error': errors.password }"
-      >
-        <label>Password</label>
+      <div class="form-group">
+        <label for="password">Password</label>
         <input
             type="password"
-            class="input"
-            v-model.trim="password"
-            @input="validatePassword"
+            v-model="$v.user.password.$model"
+            id="password"
+            name="password"
+            class="form-control"
+            :class="{ 'form-group--error': submitted && $v.user.password.$error }"
+            @input="cleanExistingErr"
+            @keypress.enter="signUp"
         />
-        <div
-            class="error"
-            v-if="errors.password"
-        >
-          Password should contains 8 characters at least
+        <div v-if="submitted && $v.user.password.$error"
+             class="invalid-feedback">
+          <span v-if="!$v.user.password.required">Password is required</span>
+          <span v-if="!$v.user.password.minLength">Password should be at least 8 characters</span>
         </div>
       </div>
-
       <div
           class="form-group"
-          v-if="this.password.length > 7 && !this.errors.password"
-          :class="{'form-group--error': errors.passwordRepeat }"
+          v-if="!$v.user.password.$error && this.user.password.length > 7"
       >
-        <label>Repeat Password</label>
+        <label for="password">Repeat Password</label>
         <input
             type="password"
-            class="input"
-            v-model.trim="passwordRepeat"
-            @input="validatePasswordRepeat"
+            id="repeat-password"
+            name="repeat-password"
+            class="form-control"
+            :class="{ 'form-group--error': submitted && $v.user.passwordRepeat.$error }"
+            v-model="$v.user.passwordRepeat.$model"
+            @input="cleanExistingErr"
+            @keypress.enter="signUp"
         />
-        <div
-            class="error"
-            v-if="errors.passwordRepeat"
-        >
-          Passwords doesn't match
+        <div v-if="submitted && $v.user.passwordRepeat.$error || submitted && this.errors.passwordNotMatch"
+             class="invalid-feedback">
+          <span v-if="!$v.user.passwordRepeat.required">Password is required | </span>
+          <span v-if="!$v.user.passwordRepeat.sameAsPassword">Passwords doesn't match</span>
         </div>
       </div>
 
-      <v-btn @click="signUp">Sign Up</v-btn>
+      <div class="form-group">
+        <v-btn class="btn btn-primary" @click="signUp">Sign Up</v-btn>
+      </div>
     </form>
+
   </div>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
+import {email, minLength, required, sameAs} from "vuelidate/lib/validators";
 
 export default {
   name: "RegistrationForm",
   data() {
     return {
-      username: '',
-      password: '',
-      passwordRepeat: '',
+      user: {
+        username: '',
+        password: '',
+        passwordRepeat: ''
+      },
       errors: {
-        common: true,
-        usernameValidation: false,
-        usernameExisting: false,
-        password: false,
-        passwordRepeat: false
-      }
+        userExistenceError: false
+      },
+      submitted: false
+    }
+  },
+  validations: {
+    user: {
+      username: {required, email},
+      password: {required, minLength: minLength(8)},
+      passwordRepeat: {required, minLength: minLength(8), sameAsPassword: sameAs('password')}
     }
   },
   methods: {
+    ...mapActions({
+      fetchUsers: 'fetchUserList',
+      updateLSUsers: 'updateLocalStorageUsers'
+    }),
+    ...mapMutations(['setUserList', 'setIsAuth', 'setCurrentUser']),
     signUp() {
-      if (this.$store.getters.getUserList.find(u => u.id === this.username)) {
-        this.errors.usernameExisting = true;
-        setTimeout(() => {
-          this.errors.usernameExisting = false;
-        }, 1500)
+      this.submitted = true;
+
+      const username = this.user.username;
+      const password = this.user.password;
+      const user = this.getUserList.find(user => user.id === username);
+
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
       }
 
-      if (this.password !== this.passwordRepeat) {
-        this.errors.passwordRepeat = true;
+      if (username === this.$store.state.admin.username || user) {
+        this.errors.userExistenceError = true;
+        return;
       }
 
-      this.check();
-
-      if (this.errors.common) {
-        this.check();
-        this.validateEmail();
-        this.validatePassword();
-        this.validatePasswordRepeat()
-      } else {
-        const user = {
-          id: this.username,
-          password: this.password,
-        };
-
-        const userList = this.getUsersList;
-        userList.push(user);
-
-        this.$store.commit('setUserList', userList);
-
-        if (!localStorage.getItem('users')) {
-          localStorage.setItem('users', JSON.stringify(userList))
-        } else {
-          this.$store.dispatch('updateLocalStorageUsers');
+      if (username && password) {
+        const newUser = {
+          id: username,
+          password: password
         }
 
-        this.$store.commit('setIsAuth', true);
-        this.$store.commit('setCurrentUser', this.username);
+        const userList = this.getUserList;
+        userList.push(newUser);
 
-        this.$cookies.set('token', user.id)
+        this.setUserList(userList);
 
-        this.$router.replace({name: 'ToDosPage'})
+        if (!localStorage.getItem('users')) {
+          localStorage.setItem('users', JSON.stringify(userList));
+        } else {
+          this.updateLSUsers();
+        }
+
+        this.setIsAuth(true);
+        this.setCurrentUser(username);
+
+        this.$cookies.set('token', username);
+
+        this.$router.replace('/todos');
       }
     },
-    validateEmail() {
-      this.errors.usernameValidation = !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.username));
-    },
-    validatePassword() {
-      this.errors.password = this.password.length < 8;
-    },
-    validatePasswordRepeat() {
-      this.errors.passwordRepeat = !(this.password === this.passwordRepeat);
-    },
-    check() {
-      this.errors.common = Object.entries(this.errors).filter(err => err[0] !== 'common').some(err => err[1] === true)
-    },
-    ...mapActions({
-      fetchUsers: 'fetchUserList'
-    })
+    cleanExistingErr() {
+      this.errors.userExistenceError = false;
+    }
   },
   computed: {
-    ...mapGetters({
-      getUsersList: 'getUserList'
-    })
-  },
-  created() {
-    this.fetchUsers();
+    ...mapGetters(['getUserList']),
   }
 }
 </script>
