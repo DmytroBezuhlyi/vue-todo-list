@@ -15,11 +15,11 @@
             @input="cleanExistingErr"
             @keypress.enter="signIn"
         />
-        <div v-if="submitted && $v.user.username.$error || submitted && this.errors.userNotExist"
+        <div v-if="submitted && $v.user.username.$error || submitted && this.errors.userExistenceError"
              class="invalid-feedback">
           <span v-if="!$v.user.username.required">Email is required</span>
           <span v-if="!$v.user.username.email">Email is invalid</span>
-          <span v-if="this.errors.userNotExist">User doesn't exist</span>
+          <span v-if="this.errors.userExistenceError">User doesn't exist</span>
         </div>
       </div>
       <div class="form-group">
@@ -70,7 +70,7 @@ export default {
         password: '',
       },
       errors: {
-        userNotExist: false,
+        userExistenceError: false,
         passwordNotMatch: false
       },
       submitted: false
@@ -94,7 +94,7 @@ export default {
 
       const username = this.user.username;
       const password = this.user.password;
-      const user = this.getUsers.find(u => u.id === username);
+      const user = this.getUserList.find(u => u.id === username);
 
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -126,22 +126,19 @@ export default {
           }
         }
       } else {
-        this.errors.userNotExist = true;
+        this.errors.userExistenceError = true;
       }
     },
     goToSignUp() {
       this.$router.push('/registration');
     },
     cleanExistingErr() {
-      this.errors.userNotExist = false;
+      this.errors.userExistenceError = false;
       this.errors.passwordNotMatch = false;
     }
   },
   computed: {
-    ...mapGetters({
-      getUsers: 'getUserList',
-      getCurrentUser: 'getCurrentUser'
-    }),
+    ...mapGetters(['getUserList', 'getCurrentUser']),
   }
 }
 </script>
