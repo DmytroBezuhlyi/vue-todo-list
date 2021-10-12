@@ -9,12 +9,14 @@ export default new Vuex.Store({
         userList: [],
         isLoading: false,
         isAuth: false,
+        isModalShow: false,
         currentUser: '',
         isMobile: false,
         admin: {
             username: 'admin@gmail.com',
-            password: 'pass'
-        }
+            password: 'pass',
+        },
+        tempTodo: {}
     }),
     getters: {
         getTodoList: (state) => {
@@ -37,6 +39,12 @@ export default new Vuex.Store({
         },
         getIsMobile: (state) => {
             return state.isMobile;
+        },
+        getTempTodo: (state) => {
+            return state.tempTodo;
+        },
+        getIsModalShow: (state) => {
+            return state.isModalShow;
         }
     },
     mutations: {
@@ -57,6 +65,12 @@ export default new Vuex.Store({
         },
         setIsMobile(state, status) {
             state.isMobile = status;
+        },
+        setTempToDo(state, todo) {
+            state.tempTodo = todo;
+        },
+        setIsModalShow(state, status) {
+            state.isModalShow = status;
         }
     },
     actions: {

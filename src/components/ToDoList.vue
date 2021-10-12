@@ -12,8 +12,7 @@
             v-for="todo in todoList"
             :key="todo.id"
             :todo="todo"
-            @remove="$emit('remove', todo)"
-            @edit="$emit('edit', todo)"
+            @remove="$emit('remove', todo.id)"
         />
       </transition-group>
     </div>

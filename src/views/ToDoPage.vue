@@ -5,35 +5,29 @@
       TODOS</h1>
     <v-btn
         class="create-todo"
-        @click="showDialog"
+        @click="showModal"
     >
       Create ToDo
     </v-btn>
 
-    <ToDoDialog
-        :show.sync="dialogShow"
-        :edit.sync="todoEditing"
-        :editedTodo="todo"
-    >
+    <ToDoDialog>
       <ToDoForm
-          @createToDo="createToDo"
-          @editToDo="updateToDo"
-          @updateToDo="updateToDo"
-          :edit.sync="todoEditing"
-          :editedTodo="todo"
+          @create="createToDo"
+          @update="updateToDo"
+          :id="this.getTempTodo.id"
+          :title="this.getTempTodo.title"
+          :description="this.getTempTodo.description"
       />
     </ToDoDialog>
 
-    <div v-if="getIsLoading">
+    <div v-if="isLoading">
       <ToDoPreloader/>
     </div>
 
     <ToDoList
         :todoList="todoListRestricted"
         @remove="removeToDo"
-        :isLoading="getIsLoading"
         v-else
-        @edit="edit"
     />
   </div>
 </template>
@@ -44,61 +38,59 @@ import ToDoList from "@/components/ToDoList";
 import ToDoForm from "@/components/ToDoForm";
 import ToDoDialog from "@/components/UI/ToDoDialog";
 import ToDoPreloader from "@/components/UI/ToDoPreloader";
+import ToDoInput from "@/components/UI/TodoInput";
+import preloaderMixin from "@/mixins/preloaderMixin";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default {
-  components: {ToDoPreloader, ToDoDialog, ToDoForm, ToDoList, ToDoNav},
+  components: {ToDoInput, ToDoPreloader, ToDoDialog, ToDoForm, ToDoList, ToDoNav},
+  mixins: [preloaderMixin],
   data() {
     return {
-      dialogShow: false,
-      todoEditing: false,
-      todo: {},
+      todo: {
+        title: '',
+        description: ''
+      }
     }
   },
   methods: {
-    ...mapMutations({
-      setLoading: "setIsLoading",
-      setTodoList: "setTodoList"
-    }),
-    ...mapActions({
-      fetchTodoList: 'fetchList',
-      updateLS: 'updateLocalStorage',
-    }),
+    ...mapMutations(['setTodoList', 'setIsModalShow', 'setTempToDo', "setIsLoading"]),
+    ...mapActions(['updateLocalStorage']),
     createToDo(todo) {
-      this.getTodoList.unshift(todo);
-      this.dialogShow = false;
-      this.updateLS();
+      const newTodo = {
+        id: Date.now(),
+        title: todo.title,
+        description: todo.description,
+        user: this.getCurrentUser,
+      }
+      this.getTodoList.unshift(newTodo);
+      this.setIsModalShow(false);
+      this.updateLocalStorage();
     },
-    removeToDo(todo) {
-      this.setTodoList(this.getTodoList.filter(t => t.id !== todo.id))
-      this.updateLS();
-    },
-    edit(todo) {
-      this.todoEditing = true;
-      this.dialogShow = true;
-      this.todo = todo;
-    },
-    updateToDo(todo) {
-      this.getTodoList.forEach(td => {
-        if (td.id === todo.id) {
-          td.title = todo.title;
-          td.description = todo.description;
+    updateToDo({title, description}) {
+      this.getTodoList.find(td => {
+        if (td.id === this.getTempTodo.id) {
+          td.title = title || this.getTempTodo.title;
+          td.description = description || this.getTempTodo.description;
         }
-      });
+      })
 
-      this.todoEditing = false;
-      this.dialogShow = false;
-      this.updateLS();
+      this.setIsModalShow(false);
+      this.updateLocalStorage();
     },
-    showDialog() {
-      this.dialogShow = true;
-      if (!this.todoEditing) {
-        this.todo = {}
+    removeToDo(id) {
+      this.setTodoList(this.getTodoList.filter(t => t.id !== id))
+      this.updateLocalStorage();
+    },
+    showModal() {
+      this.setIsModalShow(true);
+      if (this.getTempTodo) {
+        this.setTempToDo({});
       }
     },
   },
   computed: {
-    ...mapGetters(['getTodoList', 'getIsLoading']),
+    ...mapGetters(['getTodoList', 'getIsLoading', 'getTempTodo', 'getCurrentUser']),
     todoListRestricted() {
       const currentUser = this.$store.getters.getCurrentUser;
       if (currentUser === 'admin@gmail.com') {
@@ -108,9 +100,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.fetchTodoList();
-  }
 }
 </script>
 

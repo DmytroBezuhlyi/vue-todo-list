@@ -48,21 +48,4 @@ input {
 .input:nth-last-of-type {
   margin-bottom: 0;
 }
-
-input.form-group--error {
-  border: 2px solid red;
-}
-
-.form-group {
-  position: relative;
-}
-
-.invalid-feedback {
-  color: white;
-  background-color: red;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
 </style>

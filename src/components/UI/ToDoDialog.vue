@@ -2,8 +2,8 @@
   <div>
     <div
         class="dialog"
-        v-if="show"
-        @click="hideDialog"
+        v-if="this.getIsModalShow"
+        @click="hideModal"
     >
       <div
           class="dialog-content"
@@ -16,14 +16,19 @@
 </template>
 
 <script>
-import toggleMixin from "@/mixins/toggleMixin";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: "ToDoDialog",
-  mixins: [toggleMixin],
-  props: {
-    editedTodo: [Object]
-  }
+  methods: {
+    ...mapMutations(['setIsModalShow']),
+    hideModal() {
+      this.setIsModalShow(false);
+    }
+  },
+  computed: {
+    ...mapGetters(['getIsModalShow']),
+  },
 }
 </script>
 
@@ -34,7 +39,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   z-index: 1;
 }

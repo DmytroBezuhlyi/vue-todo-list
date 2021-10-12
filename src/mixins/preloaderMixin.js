@@ -10,7 +10,7 @@ export default {
 
       setTimeout(() => {
         this.isLoading = false
-      }, 700);
+      }, 1000);
     }
   },
   mounted() {

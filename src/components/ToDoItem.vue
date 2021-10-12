@@ -14,13 +14,13 @@
         </v-btn>
         <v-btn
             class="edit"
-            @click="$emit('edit', todo)"
+            @click="edit"
         >
           Edit
         </v-btn>
         <v-btn
             class="error"
-            @click="$emit('remove', todo)"
+            @click="$emit('remove', todo.id)"
         >
           Remove
         </v-btn>
@@ -31,12 +31,21 @@
 </template>
 
 <script>
+import {mapMutations} from "vuex";
+
 export default {
   name: "ToDoItem",
   props: {
     todo: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    ...mapMutations(['setTempToDo', 'setIsModalShow']),
+    edit() {
+      this.setTempToDo(this.todo);
+      this.setIsModalShow(true);
     }
   }
 }
